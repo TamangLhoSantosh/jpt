@@ -62,7 +62,12 @@ Future _loadMapStyle() async {
               const Marker(
                 markerId: MarkerId("Help"),
                 position: LatLng(27.686623, 85.317098),
-              )
+                infoWindow: InfoWindow(
+                  title: "Help",
+                  snippet: "PCPS Test",
+                )
+              ),
+
             },
             onMapCreated: (GoogleMapController controller) {
               controller.setMapStyle(maptheme);
