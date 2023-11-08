@@ -16,7 +16,7 @@ class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController>();
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(27.686382, 85.315399),
     zoom: 14.4746,
   );
 
@@ -26,12 +26,13 @@ class MapSampleState extends State<MapSample> {
       tilt: 59.440717697143555,
       zoom: 19.151926040649414);
 
-@override
-void initState() {
+  @override
+  void initState() {
     // TODO: implement initState
     super.initState();
     _loadMapStyle();
     loadmapdelay();
+    markerintit();
 
     //delay
 
@@ -45,9 +46,31 @@ void initState() {
     });
   }
   var maptheme;
-Future _loadMapStyle() async {
-  maptheme = await rootBundle.loadString('assest/raw/maptheme.json');
-}
+  Future _loadMapStyle() async {
+    maptheme = await rootBundle.loadString('assest/raw/maptheme.json');
+  }
+
+  List<Marker> markerList = [];
+  markerintit(){
+    markerList = [
+      const Marker(
+        markerId: MarkerId("Kupo"),
+        position: LatLng(27.685287, 85.316607),
+        infoWindow: InfoWindow(
+            title: "Kupo",
+            snippet: "Welcome To Kupo"
+        ),
+      ),
+      const Marker(
+        markerId: MarkerId("Hatti"),
+        position: LatLng(27.684888, 85.315502),
+        infoWindow: InfoWindow(
+            title: "Kupo",
+            snippet: "Welcome To Hatti"
+        ),
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,17 +81,7 @@ Future _loadMapStyle() async {
           showmap?GoogleMap(
             //mapType: MapType.hybrid,
             initialCameraPosition: _kGooglePlex,
-            markers: {
-              const Marker(
-                markerId: MarkerId("Help"),
-                position: LatLng(27.686623, 85.317098),
-                infoWindow: InfoWindow(
-                  title: "Help",
-                  snippet: "PCPS Test",
-                )
-              ),
-
-            },
+            markers: Set<Marker>.of(markerList),
             onMapCreated: (GoogleMapController controller) {
               controller.setMapStyle(maptheme);
               _controller.complete(controller);
@@ -85,8 +98,8 @@ Future _loadMapStyle() async {
               height: 60,
               width: size.width,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20)
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20)
               ),
             ),
           )
